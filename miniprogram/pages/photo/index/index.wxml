@@ -1,0 +1,23 @@
+<view class="container" wx:for="{{albumList}}" wx:for-item="album">
+  <view class="container-head">
+    <image src="{{album.headPhoto}}"/>
+    <view class="head-text">
+      <text >{{album.name}}</text>
+      <text class="head-time">{{album.time}}</text>
+    </view>  
+  </view>
+  <view class="container-body">
+    <image wx:for="{{album.photo}}" src="{{item}}"/>
+  </view>
+  <view class="container-foot">
+    <view class="foot-add">
+      <image src="../../../images/up.png"/><text>点赞</text>
+    </view>
+    <view class="foot-del">
+      <image src="../../../images/del.png"/><text>删除</text>
+    </view>
+    <view class="foot-fx">
+      <image src="../../../images/fx.png"/><text>分享</text>
+    </view>
+  </view>
+</view>

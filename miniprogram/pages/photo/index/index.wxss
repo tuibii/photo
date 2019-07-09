@@ -1,0 +1,53 @@
+/* pages/photo/index/index.wxss */
+.container{
+  margin: 25rpx;
+  align-items: flex-start
+}
+
+.container-head{
+  display: flex;
+  margin: 20rpx;
+}
+
+.container-head image{
+  width: 88rpx;
+  height: 88rpx;
+  margin-right: 20rpx;
+}
+
+.head-text{
+  display: flex;
+  flex-direction: column;
+}
+
+.head-time{
+  font-size:25rpx;
+  font-family:SourceHanSansCN-Regular;
+  font-weight:400;
+  color:rgba(169,169,169,1);
+}
+
+.container-body image{
+  width: 210rpx;
+  height: 210rpx;
+  margin: 10rpx;
+}
+
+.container-foot{
+  display: flex;
+  width: 700rpx;
+  justify-content: space-around;
+}
+
+.container-foot image{
+  width: 26rpx;
+  height: 26rpx;
+}
+
+.container-foot text{
+  margin-left: 10rpx;
+  font-size:24rpx;
+  font-family:SourceHanSansCN-Light;
+  font-weight:300;
+  color:rgba(38,172,245,1);
+}
