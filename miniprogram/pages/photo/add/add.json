@@ -1,3 +1,7 @@
 {
-  "usingComponents": {}
+  "navigationBarBackgroundColor": "#87CEFA",
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "相冊",
+  "backgroundColor": "#eeeeee",
+  "backgroundTextStyle": "light"
 }

@@ -1,5 +1,16 @@
-<view>
-  <view></view>
-  <view></view>
-  <view></view>
+<view class="contain">
+<view class="white">
+  <image class="photo" src="../../../images/photo.png"></image>
+</view>
+  <view class="contain-head">
+    <text class="head-name">tt</text>
+    <text class="head-time">2019年7月10日09:07:17</text>
+  </view>
+  <view class="contain-body">
+    <image src="../../../images/add2.png"></image>
+    <text>上传图片</text>
+  </view>
+  <view class="contain-foot">
+    <image src="../../../images/back.png"></image>
+  </view>
 </view>
