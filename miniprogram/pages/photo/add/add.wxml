@@ -1,10 +1,10 @@
 <view class="contain">
 <view class="white">
-  <image class="photo" src="../../../images/photo.png"></image>
+  <image class="photo" src="{{userInfo.photo}}"></image>
 </view>
   <view class="contain-head">
-    <text class="head-name">tt</text>
-    <text class="head-time">2019年7月10日09:07:17</text>
+    <text class="head-name">{{userInfo.name}}</text>
+    <text class="head-time">{{userInfo.time}}</text>
   </view>
   <view class="contain-body">
     <image src="../../../images/add2.png"></image>

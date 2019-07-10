@@ -5,6 +5,11 @@ Page({
    * 页面的初始数据
    */
   data: {
+    userInfo:{
+      name:'t222t',
+      time:'2019年7月10日09:07:17',
+      photo:'../../../images/photo.png'
+    }
 
   },
 
