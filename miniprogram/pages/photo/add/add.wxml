@@ -6,7 +6,7 @@
     <text class="head-name">{{userInfo.name}}</text>
     <text class="head-time">{{userInfo.time}}</text>
   </view>
-  <view class="contain-body">
+  <view class="contain-body" bindtap="onclick">
     <image src="../../../images/add2.png"></image>
     <text>上传图片</text>
   </view>

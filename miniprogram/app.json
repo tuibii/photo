@@ -1,5 +1,7 @@
 {
+  "cloud":true,
   "pages": [
+    "pages/photo/power/power",
     "pages/photo/add/add",
     "pages/index/index",
     "pages/userConsole/userConsole",

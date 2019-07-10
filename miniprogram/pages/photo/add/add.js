@@ -1,4 +1,5 @@
 // pages/photo/add/add.js
+const app = getApp();
 Page({
 
   /**
@@ -18,6 +19,14 @@ Page({
    */
   onLoad: function (options) {
 
+    this.setData({
+      userInfo: {
+      name: app.globalData.userInfo.nickName,
+      time: new Date().toLocaleString(),
+      photo: app.globalData.userInfo.avatarUrl
+      }
+    })
+  
   },
 
   /**
@@ -25,6 +34,7 @@ Page({
    */
   onReady: function () {
 
+ 
   },
 
   /**
@@ -67,5 +77,37 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  onclick: function(){
+    wx.chooseImage({
+      count: 6,
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+      success(res) {
+        let s = res.tempFilePaths.length
+        wx.showLoading({
+          title: '上传中...',
+        })
+        Promise.all(res.tempFilePaths.map((item) => {
+          return wx.cloud.uploadFile({
+            cloudPath: 'uploadImages/' + Date.now() + item.match(/\.[^.]+?$/)[0], // 文件名称 
+            filePath: item
+          })
+        }))
+          .then((resCloud) => {
+            wx.hideLoading()
+            wx.showToast({
+              title: '上传成功'
+            })
+
+          }).catch((err) => {
+            console.log(err)
+          })
+   
+      }
+    })
+
+    
   }
 })

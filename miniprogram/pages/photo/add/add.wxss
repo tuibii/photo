@@ -44,7 +44,8 @@ page{
 }
 
 .head-time{ 
-  font-size:22rpx;
+  margin-top: 10rpx;
+  font-size:30rpx;
   font-weight:300;
   color:rgba(153,153,153,1);
 }
