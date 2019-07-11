@@ -97,10 +97,7 @@ Page({
           })
         }))
           .then((resCloud) => {
-            wx.hideLoading()
-            wx.showToast({
-              title: '上传成功'
-            })
+          
             console.log(resCloud)
 
             db.collection('photo').add({
@@ -116,10 +113,17 @@ Page({
                 console.log(res)
               }
             })
-
-            wx.reLaunch({
-              url: '../index/index'
+            wx.hideLoading()
+            wx.showToast({
+              title: '上传成功',
+              duration: 1000
             })
+
+            setTimeout(function(){
+              wx.reLaunch({
+                url: '../index/index'
+              })
+            },1000)
 
           }).catch((err) => {
             console.log(err)

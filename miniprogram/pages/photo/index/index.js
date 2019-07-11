@@ -2,7 +2,6 @@
 const db = wx.cloud.database()
 const app = getApp()
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -102,5 +101,46 @@ Page({
     wx.navigateTo({
       url: '../add/add'
     })
+  },
+  delPhoto: function (e) {
+    let that = this;
+    wx.showModal({
+      title: '提示',
+      content: '确认要删除吗',
+      success(res) {
+        if (res.confirm) {
+          let index = e.currentTarget.dataset.id
+          wx.cloud.deleteFile({
+            fileList: that.data.albumList[index].res.map(item => (item.fileID))
+          }).then(res => {
+            // handle success
+            console.log(res.fileList)
+          }).catch(error => {
+            // handle error
+          })
+          db.collection('photo').doc(that.data.albumList[index]._id).remove()
+            .then(console.log)
+            .catch(console.error)
+
+
+          that.data.albumList.splice(index, 1)
+          that.setData({
+            albumList: that.data.albumList
+          })
+
+          wx.showToast({
+            title: '删除成功',
+            duration: 1000
+          })
+        } else if (res.cancel) {
+        
+        }
+      }
+    })
+
+
+    
+
+    
   }
 })
