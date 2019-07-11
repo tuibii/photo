@@ -110,9 +110,24 @@ Page({
               },
               success: function (res) {
                 // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
+                db.collection('up').add({
+                  // data 字段表示需新增的 JSON 数据
+                  data: {
+                    photoid: res._id,
+                    upid:[]
+                  },
+                  success: function (res) {
+                    // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
+                    console.log(res)
+                  }
+                })
+
                 console.log(res)
               }
             })
+
+            
+
             wx.hideLoading()
             wx.showToast({
               title: '上传成功',

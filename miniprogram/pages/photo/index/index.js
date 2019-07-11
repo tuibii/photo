@@ -138,10 +138,16 @@ Page({
             .then(console.log)
             .catch(console.error)
 
+          db.collection('up').doc(that.data.upInfo[index]._id).remove()
+            .then(console.log)
+            .catch(console.error)
+
 
           that.data.albumList.splice(index, 1)
+          that.data.upInfo.splice(index, 1)
           that.setData({
-            albumList: that.data.albumList
+            albumList: that.data.albumList,
+            upInfo: that.data.upInfo
           })
 
           wx.showToast({
@@ -152,11 +158,11 @@ Page({
         
         }
       }
+
     })
-
-
-    
-
-    
+  },
+  upup: function(e){
+    let index = e.currentTarget.dataset.id
+    console.log(index)
   }
 })

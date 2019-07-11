@@ -12,7 +12,7 @@
     <image wx:for="{{album.res}}" wx:key="fileID" src="{{item.fileID}}"/>
   </view>
   <view class="container-foot">
-    <view class="foot-add">
+    <view class="foot-add" bindtap="upup"  data-id="{{index}}">
       <image src="../../../images/up.png"/><text>{{upInfo[index].upid.length}}人点赞</text>
     </view>
     <view class="foot-del" wx:if="{{album._openid === openid}}" bindtap="delPhoto"  data-id="{{index}}">
