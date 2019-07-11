@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    upInfo:[],
     openid:'',
     albumList:[
       {
@@ -31,20 +32,35 @@ Page({
       openid: app.globalData.openId
     })
     
-    
      db.collection('photo').get({
       success: res => {
         this.setData({
           albumList: res.data
         })
-        console.log('[数据库] [查询记录] 成功: ', res)
+        console.log('[数据库] [查询记录]信息 成功: ', res)
       },
       fail: err => {
         wx.showToast({
           icon: 'none',
           title: '查询记录失败'
         })
-        console.error('[数据库] [查询记录] 失败：', err)
+        console.error('[数据库] [查询记录]信息 失败：', err)
+      }
+    })
+
+    db.collection('up').get({
+      success: res => {
+        this.setData({
+          upInfo: res.data
+        })
+        console.log('[数据库] [查询记录]点赞 成功: ', res)
+      },
+      fail: err => {
+        wx.showToast({
+          icon: 'none',
+          title: '查询记录失败'
+        })
+        console.error('[数据库] [查询记录]点赞 失败：', err)
       }
     })
   },
