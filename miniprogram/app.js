@@ -14,7 +14,7 @@ App({
       name: 'login',
       complete: res => {
         console.log('callFunction test result: ', res)
-        this.globalData.openId = res.result.openId
+        this.globalData.openId = res.result.openid
       }
     })
 

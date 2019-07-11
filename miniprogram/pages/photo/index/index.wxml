@@ -15,7 +15,7 @@
     <view class="foot-add">
       <image src="../../../images/up.png"/><text>点赞</text>
     </view>
-    <view class="foot-del" >
+    <view class="foot-del" wx:if="{{album._openid === openid}}">
       <image src="../../../images/del.png"/><text>删除</text>
     </view>
     <view class="foot-fx">

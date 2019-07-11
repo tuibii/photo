@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    openid:'',
     albumList:[
       {
         headPhoto: '../../../images/photo.png',
@@ -26,6 +27,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+   
+    this.setData({
+      openid: app.globalData.openId
+    })
+    
     
      db.collection('photo').get({
       success: res => {
