@@ -1,4 +1,6 @@
 // pages/photo/index/index.js
+const db = wx.cloud.database()
+const app = getApp()
 Page({
 
   /**
@@ -16,61 +18,6 @@ Page({
           '../../../images/1.png',
           '../../../images/1.png'
         ]
-      },
-      {
-        headPhoto: '../../../images/photo.png',
-        name: 'tt2',
-        time: '2019年7月9日17:15:06',
-        photo: [
-          '../../../images/1.png',
-          '../../../images/1.png',
-          '../../../images/1.png',
-          '../../../images/1.png'
-        ]
-      },
-      {
-        headPhoto: '../../../images/photo.png',
-        name: 'tt3',
-        time: '2019年7月9日17:15:06',
-        photo: [
-          '../../../images/1.png',
-          '../../../images/1.png',
-          '../../../images/1.png',
-          '../../../images/1.png'
-        ]
-      },
-      {
-        headPhoto: '../../../images/photo.png',
-        name: 'tt4',
-        time: '2019年7月9日17:15:06',
-        photo: [
-          '../../../images/1.png',
-          '../../../images/1.png',
-          '../../../images/1.png',
-          '../../../images/1.png'
-        ]
-      },
-      {
-        headPhoto: '../../../images/photo.png',
-        name: 'tt5',
-        time: '2019年7月9日17:15:06',
-        photo: [
-          '../../../images/1.png',
-          '../../../images/1.png',
-          '../../../images/1.png',
-          '../../../images/1.png'
-        ]
-      },
-      {
-        headPhoto: '../../../images/photo.png',
-        name: 'tt6',
-        time: '2019年7月9日17:15:06',
-        photo: [
-          '../../../images/1.png',
-          '../../../images/1.png',
-          '../../../images/1.png',
-          '../../../images/1.png'
-        ]
       }
     ]
   },
@@ -79,7 +26,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    
+     db.collection('photo').get({
+      success: res => {
+        this.setData({
+          albumList: res.data
+        })
+        console.log('[数据库] [查询记录] 成功: ', res)
+      },
+      fail: err => {
+        wx.showToast({
+          icon: 'none',
+          title: '查询记录失败'
+        })
+        console.error('[数据库] [查询记录] 失败：', err)
+      }
+    })
   },
 
   /**
@@ -129,5 +91,10 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  addPhoto: function(){
+    wx.navigateTo({
+      url: '../add/add'
+    })
   }
 })

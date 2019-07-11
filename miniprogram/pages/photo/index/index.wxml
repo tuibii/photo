@@ -1,23 +1,26 @@
+<image id="add" src="../../../images/add.png" bindtap="addPhoto"></image>
+<view class="main-context">
 <view class="container" wx:for="{{albumList}}" wx:for-item="album">
   <view class="container-head">
-    <image src="{{album.headPhoto}}"/>
+    <image src="{{album.avatar}}"/>
     <view class="head-text">
       <text >{{album.name}}</text>
       <text class="head-time">{{album.time}}</text>
     </view>  
   </view>
   <view class="container-body">
-    <image wx:for="{{album.photo}}" src="{{item}}"/>
+    <image wx:for="{{album.res}}" src="{{item.fileID}}"/>
   </view>
   <view class="container-foot">
     <view class="foot-add">
       <image src="../../../images/up.png"/><text>点赞</text>
     </view>
-    <view class="foot-del">
+    <view class="foot-del" >
       <image src="../../../images/del.png"/><text>删除</text>
     </view>
     <view class="foot-fx">
       <image src="../../../images/fx.png"/><text>分享</text>
     </view>
   </view>
+</view>
 </view>

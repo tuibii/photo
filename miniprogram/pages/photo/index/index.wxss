@@ -1,4 +1,17 @@
 /* pages/photo/index/index.wxss */
+.main-context{
+  display: flex;
+  flex-direction: column-reverse;
+}
+#add{
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 100rpx;
+  right: 30rpx;
+
+}
 .container{
   margin: 25rpx;
   align-items: flex-start

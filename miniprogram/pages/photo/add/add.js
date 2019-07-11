@@ -1,5 +1,6 @@
 // pages/photo/add/add.js
-const app = getApp();
+const app = getApp()
+const db = wx.cloud.database()
 Page({
 
   /**
@@ -99,6 +100,25 @@ Page({
             wx.hideLoading()
             wx.showToast({
               title: '上传成功'
+            })
+            console.log(resCloud)
+
+            db.collection('photo').add({
+              // data 字段表示需新增的 JSON 数据
+              data: {
+                name: app.globalData.userInfo.nickName,
+                avatar:app.globalData.userInfo.avatarUrl,
+                time: new Date(),
+                res: resCloud
+              },
+              success: function (res) {
+                // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
+                console.log(res)
+              }
+            })
+
+            wx.reLaunch({
+              url: '../index/index'
             })
 
           }).catch((err) => {

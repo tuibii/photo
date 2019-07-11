@@ -1,4 +1,5 @@
 const app = getApp();
+const db = wx.cloud.database()
 
 Page({
 
@@ -73,8 +74,28 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
-    wx.navigateTo({
-      url: '../add/add'
+
+    db.collection('photo').get({
+      success: res => {
+        if(res.data.length>0){
+          wx.redirectTo({
+            url: '../index/index'
+          })
+
+        }else{
+          wx.redirectTo({
+            url: '../add/add'
+          })
+
+        }
+      },
+      fail: err => {
+        wx.showToast({
+          icon: 'none',
+          title: '查询记录失败'
+        })
+        console.error('[数据库] [查询记录] 失败：', err)
+      }
     })
 
   }
