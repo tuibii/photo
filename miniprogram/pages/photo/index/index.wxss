@@ -19,7 +19,7 @@
 
 .container-head{
   display: flex;
-  margin: 20rpx;
+  margin: 10rpx;
 }
 
 .container-head image{
@@ -50,6 +50,13 @@
   display: flex;
   width: 700rpx;
   justify-content: space-around;
+  border: 1rpx rgba(38,172,245,1) solid;
+  height: 70rpx;
+}
+
+.container-foot view{
+  display: flex;
+  align-items: center;
 }
 
 .container-foot image{

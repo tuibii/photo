@@ -1,3 +1,4 @@
+<wxs module="dateUtil" src="../util/dateUtil.wxs"></wxs>
 <image id="add" src="../../../images/add.png" bindtap="addPhoto"></image>
 <view class="main-context">
 <view class="container" wx:for="{{albumList}}" wx:key="_id" wx:for-item="album" wx:for-index="al">
@@ -5,7 +6,7 @@
     <image src="{{album.avatar}}"/>
     <view class="head-text">
       <text >{{album.name}}</text>
-      <text class="head-time">{{album.time}}</text>
+      <text class="head-time">{{dateUtil.formatTime(album.time)}}</text>
     </view>  
   </view>
   <view class="container-body">
@@ -22,7 +23,9 @@
       <image src="../../../images/del.png"/><text>删除</text>
     </view>
     <view class="foot-fx">
-      <image src="../../../images/fx.png"/><text>分享</text>
+      <button open-type="share" data-id="{{al}}">
+        <image src="../../../images/fx.png"/><text>分享</text>
+      </button>
     </view>
   </view>
 </view>

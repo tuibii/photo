@@ -21,6 +21,64 @@ Page({
     this.setData({
       openid: app.globalData.openId
     })
+    // console.log(options)
+    if(options.id != undefined){
+      wx.showToast({
+        title: '来自好友： '+options.name+' 的分享',
+        icon: 'none',
+        duration: 3000
+      })
+      console.log(options)
+      db.collection('photo').where({
+        _id: options.id
+      }).get({
+        success: res => {
+          this.setData({
+            albumList: res.data
+          })
+          console.log('[数据库] [查询记录]信息 成功: ', res)
+        },
+        fail: err => {
+          wx.showToast({
+            icon: 'none',
+            title: '查询记录失败'
+          })
+          console.error('[数据库] [查询记录]信息 失败：', err)
+        }
+      })
+
+      db.collection('up').where({
+        _id: options.id
+      }).get({
+        success: res => {
+          for (var item of res.data) {
+            let upSet = new Set(item.upid)
+            item.upid = Array.from(upSet)
+
+            if (upSet.has(this.data.openid)) {
+              this.data.upItem.push(true)
+            } else {
+              this.data.upItem.push(false)
+            }
+          }
+
+          console.log(res.data)
+          this.setData({
+            upInfo: Array.from(res.data),
+            upItem: this.data.upItem
+          })
+          console.log('[数据库] [查询记录]点赞 成功: ', res)
+        },
+        fail: err => {
+          wx.showToast({
+            icon: 'none',
+            title: '查询记录失败'
+          })
+          console.error('[数据库] [查询记录]点赞 失败：', err)
+        }
+      })
+      
+    }else{
     
      db.collection('photo').get({
       success: res => {
@@ -66,6 +124,7 @@ Page({
         console.error('[数据库] [查询记录]点赞 失败：', err)
       }
     })
+    }
   },
 
   /**
@@ -114,7 +173,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    
   },
   addPhoto: function(){
     wx.navigateTo({
@@ -218,12 +277,24 @@ Page({
   preImg:function(e){
     let src = e.currentTarget.dataset.src   
     let index = e.currentTarget.dataset.id 
-    console.log(index)
-    console.log(this.data.albumList[1].res.fileID)
+    
       wx.previewImage({
         current: src,
         urls: this.data.albumList[index].res.map(item => item.fileID)
       })
 
+  },
+  onShareAppMessage:function(e){
+    console.log(e)
+    let index = e.target.dataset.id
+    
+    return {
+      title: '分享给好友',
+      path: '/pages/photo/index/index?id=' + this.data.albumList[index]._id
+        + '&&name=' + app.globalData.userInfo.nickName,
+      success: function (res) {
+        console.log('成功', res)
+      }
+    }
   }
 })
