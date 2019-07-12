@@ -214,7 +214,16 @@ Page({
 
     }
 
-
+  },
+  preImg:function(e){
+    let src = e.currentTarget.dataset.src   
+    let index = e.currentTarget.dataset.id 
+    console.log(index)
+    console.log(this.data.albumList[1].res.fileID)
+      wx.previewImage({
+        current: src,
+        urls: this.data.albumList[index].res.map(item => item.fileID)
+      })
 
   }
 })
