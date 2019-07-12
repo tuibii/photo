@@ -1,26 +1,16 @@
 // pages/photo/index/index.js
 const db = wx.cloud.database()
 const app = getApp()
+const _ = db.command
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    upInfo:[],
+    upItem:[],
+    upInfo:{},
     openid:'',
-    albumList:[
-      {
-        headPhoto: '../../../images/photo.png',
-        name: 'tt1',
-        time: '2019年7月9日17:15:06',
-        photo: [
-          '../../../images/1.png',
-          '../../../images/1.png',
-          '../../../images/1.png',
-          '../../../images/1.png'
-        ]
-      }
-    ]
+    albumList:[]
   },
 
   /**
@@ -50,8 +40,21 @@ Page({
 
     db.collection('up').get({
       success: res => {
+        for(var item of res.data){
+          let upSet = new Set(item.upid)
+          item.upid = Array.from(upSet)
+
+          if (upSet.has(this.data.openid)){
+            this.data.upItem.push(true)
+          }else{
+            this.data.upItem.push(false)
+          }
+        }
+
+        console.log(res.data)
         this.setData({
-          upInfo: res.data
+          upInfo: Array.from(res.data),
+          upItem: this.data.upItem
         })
         console.log('[数据库] [查询记录]点赞 成功: ', res)
       },
@@ -141,19 +144,28 @@ Page({
           db.collection('up').doc(that.data.upInfo[index]._id).remove()
             .then(console.log)
             .catch(console.error)
-
-
+          wx.showLoading({
+            title: '删除中...',
+          },1000)
+          that.data.upItem.splice(index, 1)
           that.data.albumList.splice(index, 1)
           that.data.upInfo.splice(index, 1)
-          that.setData({
-            albumList: that.data.albumList,
-            upInfo: that.data.upInfo
-          })
 
-          wx.showToast({
-            title: '删除成功',
-            duration: 1000
-          })
+          setTimeout(function(){
+            that.setData({
+              albumList: that.data.albumList,
+              upInfo: that.data.upInfo,
+              upItem: that.data.upItem
+            })
+
+            wx.hideLoading()
+            wx.showToast({
+              title: '删除成功',
+              duration: 1000
+            })
+          },1000)
+          
+          
         } else if (res.cancel) {
         
         }
@@ -164,5 +176,45 @@ Page({
   upup: function(e){
     let index = e.currentTarget.dataset.id
     console.log(index)
+    let upSet = new Set(this.data.upInfo[index].upid)
+    if (upSet.has(this.data.openid)){
+      upSet.delete(this.data.openid)
+
+      db.collection('up').doc(this.data.upInfo[index]._id).update({
+        data: {
+          upid: Array.from(upSet)
+        },
+        success: function (res) {
+          console.log(res)
+        }
+      })
+
+      this.data.upInfo[index].upid = Array.from(upSet)
+      this.data.upItem[index] = false
+      this.setData({
+        upInfo: this.data.upInfo,
+        upItem: this.data.upItem
+      })
+      
+    }else{
+      db.collection('up').doc(this.data.upInfo[index]._id).update({
+        data: {
+          upid: _.push(this.data.openid)
+        },
+        success: function (res) {
+          console.log(res)
+        }
+      })
+      this.data.upInfo[index].upid.push(this.data.openid)
+      this.data.upItem[index] = true
+      this.setData({
+        upInfo: this.data.upInfo,
+        upItem: this.data.upItem
+      })
+
+    }
+
+
+
   }
 })

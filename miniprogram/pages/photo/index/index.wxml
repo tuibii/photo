@@ -13,7 +13,9 @@
   </view>
   <view class="container-foot">
     <view class="foot-add" bindtap="upup"  data-id="{{index}}">
-      <image src="../../../images/up.png"/><text>{{upInfo[index].upid.length}}人点赞</text>
+      <image wx:if="{{upItem[index]}}" src="../../../images/up.png"/>
+      <image wx:else src="../../../images/noup.png"/>
+      <text>{{upInfo[index].upid.length}}人点赞</text>
     </view>
     <view class="foot-del" wx:if="{{album._openid === openid}}" bindtap="delPhoto"  data-id="{{index}}">
       <image src="../../../images/del.png"/><text>删除</text>
