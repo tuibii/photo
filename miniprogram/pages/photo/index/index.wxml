@@ -18,7 +18,7 @@
       <image wx:else src="../../../images/noup.png"/>
       <text>{{upInfo[al].upid.length}}人点赞</text>
     </view>
-    <view class="foot-del" wx:if="{{album._openid === openid}}" bindtap="delPhoto"  data-id="{{index}}">
+    <view class="foot-del" wx:if="{{album._openid === openid}}" bindtap="delPhoto"  data-id="{{al}}">
       <image src="../../../images/del.png"/><text>删除</text>
     </view>
     <view class="foot-fx">
