@@ -7,6 +7,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    talkid1:'',
+    talkid2:'',
     focusInput: false,
     height: '',
     isInput: false,
@@ -335,21 +337,38 @@ Page({
   },
 
   focusButn: function (e) {
-    console.log(e)
     this.setData({
       focusInput: true,
-      isInput: true
+      isInput: true,
+      talkid1:e.currentTarget.dataset.talkitemid,
+      talkid2:e.currentTarget.dataset.talkid
     })
+    console.log(this.data.talkid1,this.data.talkid2)
   } ,
   formSubmit: function (e) {
-    console.log('form发生了submit事件，携带数据为：', e.detail.value)
-    db.collection('comment').doc('').update({
+
+    db.collection('comment').doc(this.data.chats[this.data.talkid1]._id).update({
       data: {
-        
+        chat: {
+          content: e.detail.value.comment,
+          name: app.globalData.userInfo.nickName,
+          replyname: this.data.chats[this.data.talkid1].chat[this.data.talkid2].name
+        }
       },
       success: function (res) {
         console.log(res)
-      }
+        this.data.chats[this.data.talkid1].chat.push({
+          content: e.detail.value.comment,
+          name: app.globalData.userInfo.nickName,
+          replyname: this.data.chats[this.data.talkid1].chat[this.data.talkid2].name
+        })
+        this.setData({
+          chats: this.data.chats
+        })
+      },
+      fail: function(res){
+        console.log('失败了')
+      } 
     })
 
   }
