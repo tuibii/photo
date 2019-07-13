@@ -1,0 +1,4 @@
+<!--pages/photo/test/test.wxml-->
+<wxs module="globalUtil" src="../util/globalUtil.wxs"></wxs>
+<text>{{globalUtil.itemInArray('9afd9b6a5d26b06305074bd64e40d3d3',chats)}}</text>
+<text>{{globalUtil.lastIndex}}</text>

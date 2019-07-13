@@ -3,6 +3,7 @@
   "pages": [
     "pages/photo/power/power",
     "pages/photo/add/add",
+    "pages/photo/test/test",
     "pages/index/index",
     "pages/userConsole/userConsole",
     "pages/storageConsole/storageConsole",

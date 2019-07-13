@@ -46,6 +46,26 @@
   margin: 10rpx;
 }
 
+.container-talk{
+  width: 700rpx;
+  background-color: #dddddd;
+  margin-bottom: 15rpx;
+}
+
+.talk-item{
+  margin: 7rpx;
+}
+
+.item-name{
+  color:rgb(34, 136, 190);
+  font-size: 30rpx;
+}
+
+.item-context{
+  word-wrap:break-word;
+  font-size: 30rpx;
+}
+
 .container-foot{
   display: flex;
   width: 700rpx;
@@ -70,4 +90,42 @@
   font-family:SourceHanSansCN-Light;
   font-weight:300;
   color:rgba(38,172,245,1);
+}
+
+.commentInputView{
+  width: 100%;
+  background-color: rgba(204, 204, 204, 0.61);
+  padding: 2%;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  bottom: 0rpx;
+
+}
+.commentInput{
+  width:70%;
+  height: 70rpx;
+  background-color:#fff;
+  font-size:28rpx;
+  border-radius:15rpx;
+  display: flex;
+  align-items: center;
+}
+ 
+.input{
+  width:100%;
+  padding: 15rpx;
+  font-size: 33rpx;
+  margin: 0 auto;
+  overflow: hidden;
+  line-height-step:20rpx;
+  border: 0;
+}
+.send{
+  width: 20%;
+  height: 70rpx;
+  color: #fff;
+  font-size: 30rpx;
+  background-color: green;
+  border: 0;
 }

@@ -1,0 +1,17 @@
+var itemInArray = function (id,ids) {
+  var index = -1;
+  for(var i=0;i < ids.length;i++){
+    if (ids[i].photoid == id) {
+      index = i; 
+      break;
+    }
+  }
+
+  return index;
+}
+
+
+
+module.exports = {
+  itemInArray: itemInArray
+};

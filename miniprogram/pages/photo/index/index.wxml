@@ -1,32 +1,54 @@
 <wxs module="dateUtil" src="../util/dateUtil.wxs"></wxs>
+<wxs module="globalUtil" src="../util/globalUtil.wxs"></wxs>
 <image id="add" src="../../../images/add.png" bindtap="addPhoto"></image>
 <view class="main-context">
-<view class="container" wx:for="{{albumList}}" wx:key="_id" wx:for-item="album" wx:for-index="al">
-  <view class="container-head">
-    <image src="{{album.avatar}}"/>
-    <view class="head-text">
-      <text >{{album.name}}</text>
-      <text class="head-time">{{dateUtil.formatTime(album.time)}}</text>
-    </view>  
-  </view>
-  <view class="container-body">
-    <image wx:for="{{album.res}}" wx:for-item="photo" wx:key="fileID" data-id="{{al}}"
-      src="{{photo.fileID}}" data-src="{{photo.fileID}}" bindtap="preImg" />
-  </view>
-  <view class="container-foot">
-    <view class="foot-add" bindtap="upup"  data-id="{{al}}">
-      <image wx:if="{{upItem[al]}}" src="../../../images/up.png"/>
-      <image wx:else src="../../../images/noup.png"/>
-      <text>{{upInfo[al].upid.length}}人点赞</text>
+  <view class="container" wx:for="{{albumList}}" wx:key="_id" wx:for-item="album" wx:for-index="al">
+    <view class="container-head">
+      <image src="{{album.avatar}}"/>
+      <view class="head-text">
+        <text >{{album.name}}</text>
+        <text class="head-time">{{dateUtil.formatTime(album.time)}}</text>
+      </view>  
     </view>
-    <view class="foot-del" wx:if="{{album._openid === openid}}" bindtap="delPhoto"  data-id="{{al}}">
-      <image src="../../../images/del.png"/><text>删除</text>
+    <view class="container-body">
+      <image wx:for="{{album.res}}" wx:for-item="photo" wx:key="fileID" data-id="{{al}}"
+        src="{{photo.fileID}}" data-src="{{photo.fileID}}" bindtap="preImg" />
     </view>
-    <view class="foot-fx">
-      <button open-type="share" data-id="{{al}}">
-        <image src="../../../images/fx.png"/><text>分享</text>
-      </button>
+    <view class="container-talk" wx:if="{{globalUtil.itemInArray(album._id,chats)!=-1}}">
+      <view class="talk-item" wx:for="{{chats[globalUtil.itemInArray(album._id,chats)].chat}}" 
+      wx:for-index="talkid" wx:key="*this" wx:for-item="chatt" bindtap='focusButn'
+      data-talkitemid="{{globalUtil.itemInArray(album._id,chats)}}" data-talkid="{{talkid}}">
+        <text class="item-name"> {{chatt.name}} </text>
+        <text wx:if="{{chatt.replyname!=''}}">回复 </text>
+        <text class="item-name">{{chatt.replyname}} </text>
+        <text class="item-context">: {{chatt.context}}</text>
+      </view>
+    </view>
+    <view class="container-foot">
+      <view class="foot-add" bindtap="upup"  data-id="{{al}}">
+        <image wx:if="{{upItem[al]}}" src="../../../images/up.png"/>
+        <image wx:else src="../../../images/noup.png"/>
+        <text>{{upInfo[al].upid.length}}人点赞</text>
+      </view>
+      <view class="foot-del" wx:if="{{album._openid === openid}}" bindtap="delPhoto"  data-id="{{al}}">
+        <image src="../../../images/del.png"/><text>删除</text>
+      </view>
+      <view class="foot-fx">
+        <button open-type="share" data-id="{{al}}">
+          <image src="../../../images/fx.png"/><text>分享</text>
+        </button>
+      </view>
     </view>
   </view>
 </view>
+
+<form bindsubmit="formSubmit">
+<view class='commentInputView' hidden='{{!isInput}}' style='bottom:{{height == ""?0:height}}px;'>
+  
+    <view  class='commentInput'>
+      <input class='input' name="comment" maxlength='-1' 
+      bindfocus="inputFocus" focus='{{focusInput}}' bindblur="inputBlur"></input>
+    </view>
+    <button class='send' form-type="submit">发送</button>
 </view>
+</form>

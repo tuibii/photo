@@ -7,10 +7,15 @@ Page({
    * 页面的初始数据
    */
   data: {
+    focusInput: false,
+    height: '',
+    isInput: false,
     upItem:[],
     upInfo:{},
     openid:'',
-    albumList:[]
+    albumList:[],
+    chats:[]
+    
   },
 
   /**
@@ -48,7 +53,7 @@ Page({
       })
 
       db.collection('up').where({
-        _id: options.id
+        photoid: options.id
       }).get({
         success: res => {
           for (var item of res.data) {
@@ -125,6 +130,24 @@ Page({
       }
     })
     }
+
+    // 评论
+    db.collection('comment').get({
+      success: res => {
+        this.setData({
+          chats: res.data
+        })
+        console.log('[数据库] [查询记录]信息 成功: ', res)
+      },
+      fail: err => {
+        wx.showToast({
+          icon: 'none',
+          title: '查询记录失败'
+        })
+        console.error('[数据库] [查询记录]信息 失败：', err)
+      }
+    })
+    
   },
 
   /**
@@ -296,5 +319,38 @@ Page({
         console.log('成功', res)
       }
     }
+  },
+  inputFocus(e) {
+    console.log(e, '键盘弹起')
+    this.setData({
+      height: e.detail.height,
+      isInput: true
+    })
+  },
+  inputBlur() {
+    console.log('键盘收起')
+    this.setData({
+      isInput: false
+    })
+  },
+
+  focusButn: function (e) {
+    console.log(e)
+    this.setData({
+      focusInput: true,
+      isInput: true
+    })
+  } ,
+  formSubmit: function (e) {
+    console.log('form发生了submit事件，携带数据为：', e.detail.value)
+    db.collection('comment').doc('').update({
+      data: {
+        
+      },
+      success: function (res) {
+        console.log(res)
+      }
+    })
+
   }
 })

@@ -40,8 +40,8 @@
 				},
 				{
 					"id": 1,
-					"name": "index",
-					"pathName": "pages/photo/index/index",
+					"name": "test",
+					"pathName": "pages/photo/test/test",
 					"query": "",
 					"scene": null
 				}
