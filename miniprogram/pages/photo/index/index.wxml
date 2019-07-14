@@ -14,7 +14,7 @@
       <image wx:for="{{album.res}}" wx:for-item="photo" wx:key="fileID" data-id="{{al}}"
         src="{{photo.fileID}}" data-src="{{photo.fileID}}" bindtap="preImg" />
     </view>
-    <view class="container-talk" wx:if="{{globalUtil.itemInArray(album._id,chats)!=-1}}">
+    <view class="container-talk" >
       <view class="talk-item" wx:for="{{chats[globalUtil.itemInArray(album._id,chats)].chat}}" 
       wx:for-index="talkid" wx:key="*this" wx:for-item="chatt" bindtap='focusButn'
       data-talkitemid="{{globalUtil.itemInArray(album._id,chats)}}" data-talkid="{{talkid}}">

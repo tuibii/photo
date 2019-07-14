@@ -208,13 +208,14 @@ Page({
     })
   },
   delPhoto: function (e) {
-    let that = this;
+    let that = this
     wx.showModal({
       title: '提示',
       content: '确认要删除吗',
       success(res) {
         if (res.confirm) {
           let index = e.currentTarget.dataset.id
+          let delComment = that.data.albumList[index]._id
           wx.cloud.deleteFile({
             fileList: that.data.albumList[index].res.map(item => (item.fileID))
           }).then(res => {
@@ -230,6 +231,16 @@ Page({
           db.collection('up').doc(that.data.upInfo[index]._id).remove()
             .then(console.log)
             .catch(console.error)
+          for(var i = 0;i<that.data.chats.length;i++){
+            if (that.data.chats[i].photoid == delComment){
+              console.log('删除了评论', delComment, that.data.chats)
+              db.collection('comment').doc(that.data.chats[i]._id).remove()
+                .then(console.log)
+                .catch(console.error)
+                
+              break;
+            }
+          }
           wx.showLoading({
             title: '删除中...',
           },1000)
@@ -386,7 +397,8 @@ Page({
           context: e.detail.value.comment,
           name: app.globalData.userInfo.nickName,
           replyname:''
-        }]
+        }],
+        photoid: this.data.commentphotoid
       })
       console.log('开始添加', this.data.chats)
       db.collection('comment').add({
@@ -402,23 +414,33 @@ Page({
         success: function (res) {
           // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
           console.log(res)
-          console.log('添加评论完成', this.data.chats)
-          that.setData({
-            chats: that.data.chats
-          })
+          console.log('添加评论完成', that.data.chats)
+          that.data.chats[that.data.chats.length-1]._id = res._id
         },
         fail: function(res){
           console.log(res)
-          console.log('添加评论失败', this.data.chats)
+          console.log('添加评论失败', that.data.chats)
         }
+      })
+      that.setData({
+        chats: that.data.chats
       })
 
     }else{
-      this.data.chats[this.data.talkid1].chat.push({
-        context: e.detail.value.comment,
-        name: app.globalData.userInfo.nickName,
-        replyname: this.data.chats[this.data.talkid1].chat[this.data.talkid2].name
-      })
+      if (this.data.talkid2!=''){
+        this.data.chats[this.data.talkid1].chat.push({
+          context: e.detail.value.comment,
+          name: app.globalData.userInfo.nickName,
+          replyname: this.data.chats[this.data.talkid1].chat[this.data.talkid2].name
+        })
+      }else{
+        this.data.chats[this.data.talkid1].chat.push({
+          context: e.detail.value.comment,
+          name: app.globalData.userInfo.nickName,
+          replyname: ''
+        })
+      }
+      
       let newchat = this.data.chats[this.data.talkid1].chat
       wx.cloud.callFunction({
         name: 'updatedb',
@@ -431,10 +453,6 @@ Page({
         },
         success: function (res) {
           console.log(res)
-          console.log(1, e.detail.value.comment)
-          console.log(2, app.globalData.userInfo.nickName)
-          console.log(3, that.data.chats[that.data.talkid1].chat[that.data.talkid2].name)
-
           that.setData({
             chats: that.data.chats
           })
