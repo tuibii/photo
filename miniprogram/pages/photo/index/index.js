@@ -2,11 +2,13 @@
 const db = wx.cloud.database()
 const app = getApp()
 const _ = db.command
+
 Page({
   /**
    * 页面的初始数据
    */
   data: {
+    commentphotoid:'',
     talkid1:'',
     talkid2:'',
     focusInput: false,
@@ -264,14 +266,29 @@ Page({
     if (upSet.has(this.data.openid)){
       upSet.delete(this.data.openid)
 
-      db.collection('up').doc(this.data.upInfo[index]._id).update({
+      wx.cloud.callFunction({
+        name: 'updatedb',
         data: {
-          upid: Array.from(upSet)
+          dbname: 'up',
+          docid: this.data.upInfo[index]._id,
+          dbdata: {
+            upid: Array.from(upSet)
+          }
         },
         success: function (res) {
           console.log(res)
+        }, fail: function (res) {
+          console.log(res)
         }
       })
+      // db.collection('up').doc(this.data.upInfo[index]._id).update({
+      //   data: {
+      //     upid: Array.from(upSet)
+      //   },
+      //   success: function (res) {
+      //     console.log('取消赞',res)
+      //   }
+      // })
 
       this.data.upInfo[index].upid = Array.from(upSet)
       this.data.upItem[index] = false
@@ -281,14 +298,30 @@ Page({
       })
       
     }else{
-      db.collection('up').doc(this.data.upInfo[index]._id).update({
+      upSet.add(this.data.openid)
+      wx.cloud.callFunction({
+        name: 'updatedb',
         data: {
-          upid: _.push(this.data.openid)
+          dbname: 'up',
+          docid: this.data.upInfo[index]._id,
+          dbdata:{
+            upid: Array.from(upSet)
+          }
         },
-        success: function (res) {
+         success: function (res) {
+          console.log(res)
+        }, fail: function (res) {
           console.log(res)
         }
       })
+      // db.collection('up').doc(this.data.upInfo[index]._id).update({
+      //   data: {
+      //     upid: _.push(this.data.openid)
+      //   },
+      //   success: function (res) {
+      //     console.log('点赞',res)
+      //   }
+      // })
       this.data.upInfo[index].upid.push(this.data.openid)
       this.data.upItem[index] = true
       this.setData({
@@ -346,30 +379,104 @@ Page({
     console.log(this.data.talkid1,this.data.talkid2)
   } ,
   formSubmit: function (e) {
-
-    db.collection('comment').doc(this.data.chats[this.data.talkid1]._id).update({
-      data: {
-        chat: {
-          content: e.detail.value.comment,
+    let that = this
+    if (this.data.talkid1 == '-1'){
+      this.data.chats.push({
+        chat:[{
+          context: e.detail.value.comment,
           name: app.globalData.userInfo.nickName,
-          replyname: this.data.chats[this.data.talkid1].chat[this.data.talkid2].name
+          replyname:''
+        }]
+      })
+      console.log('开始添加', this.data.chats)
+      db.collection('comment').add({
+        // data 字段表示需新增的 JSON 数据
+        data: {
+          chat: [{
+            context: e.detail.value.comment,
+            name: app.globalData.userInfo.nickName,
+            replyname: ''
+          }],
+          photoid: this.data.commentphotoid
+        },
+        success: function (res) {
+          // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
+          console.log(res)
+          console.log('添加评论完成', this.data.chats)
+          that.setData({
+            chats: that.data.chats
+          })
+        },
+        fail: function(res){
+          console.log(res)
+          console.log('添加评论失败', this.data.chats)
         }
-      },
-      success: function (res) {
-        console.log(res)
-        this.data.chats[this.data.talkid1].chat.push({
-          content: e.detail.value.comment,
-          name: app.globalData.userInfo.nickName,
-          replyname: this.data.chats[this.data.talkid1].chat[this.data.talkid2].name
-        })
-        this.setData({
-          chats: this.data.chats
-        })
-      },
-      fail: function(res){
-        console.log('失败了')
-      } 
-    })
+      })
 
+    }else{
+      this.data.chats[this.data.talkid1].chat.push({
+        context: e.detail.value.comment,
+        name: app.globalData.userInfo.nickName,
+        replyname: this.data.chats[this.data.talkid1].chat[this.data.talkid2].name
+      })
+      let newchat = this.data.chats[this.data.talkid1].chat
+      wx.cloud.callFunction({
+        name: 'updatedb',
+        data: {
+          dbname: 'comment',
+          docid: that.data.chats[that.data.talkid1]._id,
+          dbdata: {
+            chat: newchat
+          }
+        },
+        success: function (res) {
+          console.log(res)
+          console.log(1, e.detail.value.comment)
+          console.log(2, app.globalData.userInfo.nickName)
+          console.log(3, that.data.chats[that.data.talkid1].chat[that.data.talkid2].name)
+
+          that.setData({
+            chats: that.data.chats
+          })
+        },
+        fail: function (res) {
+          console.log('失败了')
+        }
+      })
+    }
+
+    // db.collection('comment').doc(this.data.chats[this.data.talkid1]._id).update({
+    //   data: {
+    //     chat: {
+    //       content: e.detail.value.comment,
+    //       name: app.globalData.userInfo.nickName,
+    //       replyname: this.data.chats[this.data.talkid1].chat[this.data.talkid2].name
+    //     }
+    //   },
+    //   success: function (res) {
+    //     console.log(res)
+    //     this.data.chats[this.data.talkid1].chat.push({
+    //       content: e.detail.value.comment,
+    //       name: app.globalData.userInfo.nickName,
+    //       replyname: this.data.chats[this.data.talkid1].chat[this.data.talkid2].name
+    //     })
+    //     this.setData({
+    //       chats: this.data.chats
+    //     })
+    //   },
+    //   fail: function(res){
+    //     console.log('失败了')
+    //   } 
+    // })
+
+  },
+  focusButnNew: function (e) {
+    this.setData({
+      focusInput: true,
+      isInput: true,
+      talkid1: e.currentTarget.dataset.talkitemid,
+      commentphotoid: e.currentTarget.dataset.photoid
+    })
+    console.log(this.data.talkid1, this.data.talkid2)
   }
 })

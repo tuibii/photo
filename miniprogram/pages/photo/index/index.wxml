@@ -30,7 +30,12 @@
         <image wx:else src="../../../images/noup.png"/>
         <text>{{upInfo[al].upid.length}}人点赞</text>
       </view>
-      <view class="foot-del" wx:if="{{album._openid === openid}}" bindtap="delPhoto"  data-id="{{al}}">
+      <view bindtap='focusButnNew' data-photoid="{{album._id}}"
+       data-talkitemid="{{globalUtil.itemInArray(album._id,chats)}}">
+        <text>评论</text>
+      </view>
+      <view class="foot-del" wx:if="{{album._openid === openid}}" bindtap="delPhoto" 
+      data-id="{{al}}">
         <image src="../../../images/del.png"/><text>删除</text>
       </view>
       <view class="foot-fx">
