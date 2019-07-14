@@ -8,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    placeholder:'',
     commentphotoid:'',
     talkid1:'',
     talkid2:'',
@@ -385,7 +386,8 @@ Page({
       focusInput: true,
       isInput: true,
       talkid1:e.currentTarget.dataset.talkitemid,
-      talkid2:e.currentTarget.dataset.talkid
+      talkid2:e.currentTarget.dataset.talkid,
+      placeholder: '回复' + this.data.chats[e.currentTarget.dataset.talkitemid].chat[e.currentTarget.dataset.talkid].name,
     })
     console.log(this.data.talkid1,this.data.talkid2)
   } ,
@@ -493,7 +495,8 @@ Page({
       focusInput: true,
       isInput: true,
       talkid1: e.currentTarget.dataset.talkitemid,
-      commentphotoid: e.currentTarget.dataset.photoid
+      commentphotoid: e.currentTarget.dataset.photoid,
+      placeholder:'评论..'
     })
     console.log(this.data.talkid1, this.data.talkid2)
   }

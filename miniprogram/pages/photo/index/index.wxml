@@ -51,7 +51,7 @@
 <view class='commentInputView' hidden='{{!isInput}}' style='bottom:{{height == ""?0:height}}px;'>
   
     <view  class='commentInput'>
-      <input class='input' name="comment" maxlength='-1' 
+      <input class='input' name="comment" maxlength='-1' placeholder="{{placeholder}}"
       bindfocus="inputFocus" focus='{{focusInput}}' bindblur="inputBlur"></input>
     </view>
     <button class='send' form-type="submit">发送</button>
