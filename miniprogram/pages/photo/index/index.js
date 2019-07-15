@@ -8,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    formValue:'',
     placeholder:'',
     commentphotoid:'',
     talkid1:'',
@@ -187,7 +188,19 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    let that = this
+    wx.showNavigationBarLoading()
+    let options = {}
+    setTimeout(function(){
+      that.onLoad(options)
+      wx.hideNavigationBarLoading()
+      // 停止下拉动作
+      wx.stopPullDownRefresh()
+      wx.showToast({
+        icon:'success',
+        title: '刷新成功',
+      })
+    },1500)
   },
 
   /**
@@ -429,13 +442,16 @@ Page({
       })
 
     }else{
-      if (this.data.talkid2!=''){
+      console.log(this.data.talkid2,this.data.talkid2 != '-1')
+      if (this.data.talkid2!='-1'){
+        console.log(app.globalData.userInfo.nickName + '评论' + this.data.chats[this.data.talkid1].chat[this.data.talkid2].name)
         this.data.chats[this.data.talkid1].chat.push({
           context: e.detail.value.comment,
           name: app.globalData.userInfo.nickName,
           replyname: this.data.chats[this.data.talkid1].chat[this.data.talkid2].name
         })
       }else{
+        console.log(app.globalData.userInfo.nickName+'评论')
         this.data.chats[this.data.talkid1].chat.push({
           context: e.detail.value.comment,
           name: app.globalData.userInfo.nickName,
@@ -464,6 +480,10 @@ Page({
         }
       })
     }
+    this.setData({
+      formValue:''
+    })
+
 
     // db.collection('comment').doc(this.data.chats[this.data.talkid1]._id).update({
     //   data: {
@@ -495,6 +515,7 @@ Page({
       focusInput: true,
       isInput: true,
       talkid1: e.currentTarget.dataset.talkitemid,
+      talkid2: '-1',
       commentphotoid: e.currentTarget.dataset.photoid,
       placeholder:'评论..'
     })
