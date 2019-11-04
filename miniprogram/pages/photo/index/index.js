@@ -376,7 +376,7 @@ Page({
       path: '/pages/photo/index/index?id=' + this.data.albumList[index]._id
         + '&&name=' + app.globalData.userInfo.nickName,
       success: function (res) {
-        console.log('成功', res)
+          
       }
     }
   },
